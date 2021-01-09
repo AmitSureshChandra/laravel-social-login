@@ -23,12 +23,21 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+
+    $products = \App\Models\Product::all();
+
+    return view('dashboard', compact('products'));
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/login/{_driver}', function ($driver) {
     return Socialite::driver($driver)->redirect();
 });
+
+Route::get('/products', 'ProductController@index');
+Route::post('/products/{product}/delete', 'ProductController@destroy');
+Route::post('/products', 'ProductController@store');
+Route::post('/products/{product}', 'ProductController@update');
+Route::post('/products/{product}/edit', 'ProductController@edit');
 
 Route::get('/login/{_driver}/callback', function ($driver) {
     $social_user = Socialite::driver($driver)->user();
