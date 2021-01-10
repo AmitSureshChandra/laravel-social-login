@@ -29,24 +29,25 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('products'));
 })->middleware(['auth'])->name('dashboard');
 
+Route::middleware(['auth'])->group(function(){
+    Route::get('/categories', 'CategoryController@index')->name('categories');
+    Route::get('/categories/add', 'CategoryController@create');
+    Route::post('/categories/{category}/delete', 'CategoryController@destroy');
+    Route::post('/categories', 'CategoryController@store');
+    Route::post('/categories/{category}', 'CategoryController@update');
+    Route::get('/categories/{category}/edit', 'CategoryController@edit');
+    Route::get('/products', 'ProductController@index')->name('products');
+    Route::get('/products/add', 'ProductController@create');
+    Route::post('/products/{product}/delete', 'ProductController@destroy');
+    Route::post('/products', 'ProductController@store');
+    Route::post('/products/{product}', 'ProductController@update');
+    Route::get('/products/{product}/edit', 'ProductController@edit');
+});
+
+
 Route::get('/login/{_driver}', function ($driver) {
     return Socialite::driver($driver)->redirect();
 });
-
-Route::get('/categories', 'CategoryController@index')->name('categories');
-Route::get('/categories/add', 'CategoryController@create');
-Route::post('/categories/{category}/delete', 'CategoryController@destroy');
-Route::post('/categories', 'CategoryController@store');
-Route::post('/categories/{category}', 'CategoryController@update');
-Route::get('/categories/{category}/edit', 'CategoryController@edit');
-
-
-Route::get('/products', 'ProductController@index')->name('products');
-Route::get('/products/add', 'ProductController@create');
-Route::post('/products/{product}/delete', 'ProductController@destroy');
-Route::post('/products', 'ProductController@store');
-Route::post('/products/{product}', 'ProductController@update');
-Route::get('/products/{product}/edit', 'ProductController@edit');
 
 Route::get('/login/{_driver}/callback', function ($driver) {
     $social_user = Socialite::driver($driver)->user();
