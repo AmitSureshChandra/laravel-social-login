@@ -33,11 +33,15 @@ Route::get('/login/{_driver}', function ($driver) {
     return Socialite::driver($driver)->redirect();
 });
 
-Route::get('/products', 'ProductController@index');
+Route::get('/categories', 'CategoryController@index')->name('categories');
+
+
+Route::get('/products', 'ProductController@index')->name('products');
+Route::get('/products/add', 'ProductController@create');
 Route::post('/products/{product}/delete', 'ProductController@destroy');
 Route::post('/products', 'ProductController@store');
 Route::post('/products/{product}', 'ProductController@update');
-Route::post('/products/{product}/edit', 'ProductController@edit');
+Route::get('/products/{product}/edit', 'ProductController@edit');
 
 Route::get('/login/{_driver}/callback', function ($driver) {
     $social_user = Socialite::driver($driver)->user();

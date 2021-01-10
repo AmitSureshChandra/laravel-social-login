@@ -27,7 +27,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('layout.product.create');
+        $categories = Category::all();
+        return view('layouts.products.create', compact('categories'));
     }
 
     /**
@@ -38,11 +39,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = Product::$request->only(['name','price','category_id','size','stock','description']);
-
-        return response()->json([
-            "data" => $product
-        ]);
+        Product::create($request->only(['name','price','category_id','size','stock','description']));
+        $products = \App\Models\Product::all();
+        return view('dashboard',compact('products'));
     }
 
     /**
@@ -62,9 +61,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        $categories = Category::all();
+        return view('layouts.products.edit', compact('product','categories'));
     }
 
     /**
@@ -78,9 +78,8 @@ class ProductController extends Controller
     {
         $product->update($request->only(['name','price','category_id','size','stock','description']));
 
-        return response()->json([
-            "data" => $product
-        ]);
+        $products = \App\Models\Product::all();
+        return view('dashboard',compact('products'));
     }
 
     /**
@@ -89,8 +88,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        $products = \App\Models\Product::all();
+        return view('dashboard',compact('products'));
     }
 }
