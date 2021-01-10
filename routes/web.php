@@ -34,6 +34,11 @@ Route::get('/login/{_driver}', function ($driver) {
 });
 
 Route::get('/categories', 'CategoryController@index')->name('categories');
+Route::get('/categories/add', 'CategoryController@create');
+Route::post('/categories/{category}/delete', 'CategoryController@destroy');
+Route::post('/categories', 'CategoryController@store');
+Route::post('/categories/{category}', 'CategoryController@update');
+Route::get('/categories/{category}/edit', 'CategoryController@edit');
 
 
 Route::get('/products', 'ProductController@index')->name('products');

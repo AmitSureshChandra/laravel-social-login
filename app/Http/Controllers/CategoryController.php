@@ -14,9 +14,9 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json([
-                "data" => Category::all()
-        ]);
+        $categories = Category::all();
+        return view('category', compact('categories'));
+
     }
 
     /**
@@ -26,7 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('layouts.categories.create');
     }
 
     /**
@@ -37,13 +37,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::forceCreate($request->only([
+        Category::forceCreate($request->only([
             'name' , 'display_name'
         ]));
 
-        return response()->json([
-            "data" => $category
-        ]);
+        $categories = Category::all();
+
+        return view('category', compact('categories'));
+
     }
 
     /**
@@ -65,9 +66,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return view('layouts.categories.edit', compact('category'));
     }
 
     /**
@@ -85,9 +86,9 @@ class CategoryController extends Controller
             'display_name' =>  $request->display_name
         ]);
 
-        return response()->json([
-            "data" => $category
-        ]);
+        $categories = Category::all();
+
+        return view('category', compact('categories'));
     }
 
     /**
@@ -99,8 +100,9 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response()->json([
-            "data" => "deleted"
-        ]);
+
+        $categories = Category::all();
+
+        return view('category', compact('categories'));
     }
 }
